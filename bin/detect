@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "anycable-go-buildpack"
+exit 0

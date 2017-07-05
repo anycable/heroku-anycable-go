@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+BIN_PATH="$BUILD_DIR/bin"
+mkdir -p $CACHE_DIR $BIN_PATH
+
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION" ]; then
+  version=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION`
+else
+  version="0.4.1"
+fi
+
+ANYCABLE_GO_URL="https://s3.amazonaws.com/anycable/builds/$version/anycable-go-$version-linux-386"
+ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go"
+
+BIN_DIR=$(cd $(dirname $0); pwd)
+
+if [ -f $ANYCABLE_GO_CACHE ]; then
+  echo "-----> Using anycable-go from cache"
+else
+  echo "-----> Downloading anycable-go"
+  curl -L $ANYCABLE_GO_URL -o $ANYCABLE_GO_CACHE
+fi
+
+echo "-----> Copying binary"
+cp $ANYCABLE_GO_CACHE $BIN_PATH/
+
+echo "-----> Setting permissions"
+chmod +x $BIN_PATH/anycable-go
