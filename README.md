@@ -14,7 +14,7 @@ Anycable-Go version (default): `0.4.1`
 This buildpack only installs `anycable-go` binary and should be used in conjunction with other buildpacks (e.g. Ruby).
 
 ```bash
-$ heroku buildpacks:add anycable/heroku-anycable-go
+$ heroku buildpacks:add https://github.com/anycable/heroku-anycable-go
 ```
 
 ### Anycable-Go Version
