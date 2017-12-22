@@ -7,7 +7,7 @@ binary with your environment.
 
 Version: `0.1.0`
 
-Anycable-Go version (default): `0.4.1`
+Anycable-Go version (default): `0.5.2`
 
 ## Usage
 
