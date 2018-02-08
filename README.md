@@ -5,9 +5,9 @@
 This is a [Heroku buildpack][0] for bundling a compatible [anycable-go][1]
 binary with your environment.
 
-Version: `0.1.2`
+Version: `0.1.3`
 
-Anycable-Go version (default): `0.5.3`
+Anycable-Go version (default): `0.5.4`
 
 ## Usage
 

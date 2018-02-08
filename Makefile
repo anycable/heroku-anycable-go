@@ -2,7 +2,7 @@ all: test
 
 test:
 	docker build -t anycable-go-test .
-	docker run anycable-go-test | grep -q "0.5.3"
+	docker run anycable-go-test | grep -q "0.5.4"
 
 clean:
 	docker ps -a | grep "anycable-go-test" | awk '{ print $$1 }' | xargs -I@ docker rm @
