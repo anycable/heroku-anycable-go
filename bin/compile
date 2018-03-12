@@ -17,7 +17,7 @@ else
 fi
 
 ANYCABLE_GO_URL="https://s3.amazonaws.com/anycable/builds/$version/anycable-go-$version-linux-386"
-ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go"
+ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$HEROKU_ANYCABLE_GO_VERSION"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
 
@@ -29,7 +29,7 @@ else
 fi
 
 echo "-----> Copying binary"
-cp $ANYCABLE_GO_CACHE $BIN_PATH/
+cp $ANYCABLE_GO_CACHE $BIN_PATH/anycable-go
 
 echo "-----> Setting permissions"
 chmod +x $BIN_PATH/anycable-go
