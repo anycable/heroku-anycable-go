@@ -24,7 +24,7 @@ BIN_DIR=$(cd $(dirname $0); pwd)
 if [ -f $ANYCABLE_GO_CACHE ]; then
   echo "-----> Using anycable-go $version from cache"
 else
-  echo "-----> Downloading anycable-go $version"
+  echo "-----> Downloading anycable-go $version from $ANYCABLE_GO_URL"
   curl -L $ANYCABLE_GO_URL -o $ANYCABLE_GO_CACHE
 fi
 
