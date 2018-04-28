@@ -16,8 +16,8 @@ else
   version="0.5.4"
 fi
 
-ANYCABLE_GO_URL="https://s3.amazonaws.com/anycable/builds/$version/anycable-go-$version-linux-386"
-ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$HEROKU_ANYCABLE_GO_VERSION"
+ANYCABLE_GO_URL="https://s3.amazonaws.com/anycable/builds/$version/anycable-go-$version-heroku"
+ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
 
