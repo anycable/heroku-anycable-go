@@ -22,9 +22,9 @@ ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
 BIN_DIR=$(cd $(dirname $0); pwd)
 
 if [ -f $ANYCABLE_GO_CACHE ]; then
-  echo "-----> Using anycable-go from cache"
+  echo "-----> Using anycable-go $version from cache"
 else
-  echo "-----> Downloading anycable-go"
+  echo "-----> Downloading anycable-go $version"
   curl -L $ANYCABLE_GO_URL -o $ANYCABLE_GO_CACHE
 fi
 
@@ -33,3 +33,6 @@ cp $ANYCABLE_GO_CACHE $BIN_PATH/anycable-go
 
 echo "-----> Setting permissions"
 chmod +x $BIN_PATH/anycable-go
+
+echo "-----> Verify that binary is working"
+$BIN_PATH/anycable-go -v
