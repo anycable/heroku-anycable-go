@@ -35,4 +35,4 @@ echo "-----> Setting permissions"
 chmod +x $BIN_PATH/anycable-go
 
 echo "-----> Verify that binary is working"
-$BIN_PATH/anycable-go -v
+$BIN_PATH/anycable-go -h
