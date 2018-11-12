@@ -16,4 +16,4 @@ RUN bin/compile /app ./vendor /env
 
 WORKDIR /app
 
-CMD ./bin/anycable-go -version
+CMD ./bin/anycable-go -v
