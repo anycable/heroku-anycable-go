@@ -36,4 +36,4 @@ chmod +x $BIN_PATH/anycable-go
 
 echo "-----> Verify that binary is working"
 # prior version 0.6 we had only --version flag
-$BIN_PATH/anycable-go --version || $BIN_PATH/anycable-go -v
+$BIN_PATH/anycable-go -v || $BIN_PATH/anycable-go --version
