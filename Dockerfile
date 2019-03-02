@@ -1,6 +1,4 @@
-FROM ubuntu:trusty
-
-RUN apt-get update && apt-get install -y build-essential curl
+FROM heroku/heroku:18
 
 ADD ./ /buildback
 

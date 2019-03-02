@@ -16,7 +16,7 @@ else
   version="0.6.0"
 fi
 
-ANYCABLE_GO_URL="https://s3.amazonaws.com/anycable/builds/$version/anycable-go-$version-heroku"
+ANYCABLE_GO_URL="https://github.com/anycable/anycable-go/releases/download/v$version/anycable-go-v$version-linux-amd64"
 ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
@@ -36,4 +36,4 @@ chmod +x $BIN_PATH/anycable-go
 
 echo "-----> Verify that binary is working"
 # prior version 0.6 we had only --version flag
-$BIN_PATH/anycable-go --version || $BIN_PATH/anycable-go -v
+$BIN_PATH/anycable-go -v || $BIN_PATH/anycable-go --version
