@@ -1,0 +1,43 @@
+version: 2.1
+
+# Workflow definition
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout
+      - test:
+          requires:
+            - checkout
+
+jobs:
+  checkout:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}
+            - source-v1
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .git
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  test:
+    docker:
+      - image: docker:18.06.0-ce
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run: docker build -t anycable-go-test .
+      - run: docker run anycable-go-test | grep -q "0.6.2"
