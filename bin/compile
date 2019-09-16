@@ -13,7 +13,7 @@ mkdir -p $CACHE_DIR $BIN_PATH
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION" ]; then
   version=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION`
 else
-  version="0.6.2"
+  version="0.6.4"
 fi
 
 ANYCABLE_GO_URL="https://github.com/anycable/anycable-go/releases/download/v$version/anycable-go-v$version-mrb-linux-amd64"
