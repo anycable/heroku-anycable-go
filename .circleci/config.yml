@@ -9,6 +9,24 @@ workflows:
       - test:
           requires:
             - checkout
+      - test_with_version:
+          requires:
+            - checkout
+      - test_with_mrb_version:
+          requires:
+            - checkout
+
+executors:
+  docker:
+    docker:
+      - image: docker:18.06.0-ce
+
+commands:
+  prepare_docker_image:
+    steps:
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run: docker build -t anycable-go-test .
 
 jobs:
   checkout:
@@ -32,12 +50,35 @@ jobs:
           paths: .
 
   test:
-    docker:
-      - image: docker:18.06.0-ce
+    executor: docker
     steps:
       - attach_workspace:
           at: .
-      - setup_remote_docker:
-          version: 18.06.0-ce
-      - run: docker build -t anycable-go-test .
+      - run: rm test/env/HEROKU_ANYCABLE_GO_VERSION
+      - prepare_docker_image
+      - run: |
+          echo "DEBUG VERSION: $(docker run anycable-go-test)"
+      - run: docker run anycable-go-test | grep -q "0.6.4"
+
+  test_with_version:
+    executor: docker
+    steps:
+      - attach_workspace:
+          at: .
+      - prepare_docker_image
+      - run: |
+          echo "DEBUG VERSION: $(docker run anycable-go-test)"
       - run: docker run anycable-go-test | grep -q "0.6.2"
+
+  test_with_mrb_version:
+    executor: docker
+    steps:
+      - attach_workspace:
+          at: .
+      - run: |
+          rm test/env/HEROKU_ANYCABLE_GO_VERSION
+          echo "0.6.3-mrb" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+      - prepare_docker_image
+      - run: |
+          echo "DEBUG VERSION: $(docker run anycable-go-test)"
+      - run: docker run anycable-go-test | grep -q "0.6.3"
