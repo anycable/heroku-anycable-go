@@ -16,7 +16,13 @@ else
   version="0.6.4"
 fi
 
-ANYCABLE_GO_URL="https://github.com/anycable/anycable-go/releases/download/v$version/anycable-go-v$version-linux-amd64"
+version_dir=${version}
+
+if [[ $version == *"-mrb"* ]]; then
+  version_dir=${version/"-mrb"/""}
+fi
+
+ANYCABLE_GO_URL="https://github.com/anycable/anycable-go/releases/download/v${version_dir}/anycable-go-v$version-linux-amd64"
 ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
 
 BIN_DIR=$(cd $(dirname $0); pwd)

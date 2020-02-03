@@ -77,8 +77,8 @@ jobs:
           at: .
       - run: |
           rm test/env/HEROKU_ANYCABLE_GO_VERSION
-          echo "0.6.3-mrb" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+          echo "0.6.4-mrb" >> test/env/HEROKU_ANYCABLE_GO_VERSION
       - prepare_docker_image
       - run: |
           echo "DEBUG VERSION: $(docker run anycable-go-test)"
-      - run: docker run anycable-go-test | grep -q "0.6.3"
+      - run: docker run anycable-go-test | grep -q "0.6.4-mrb"
