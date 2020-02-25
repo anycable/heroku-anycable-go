@@ -15,6 +15,9 @@ workflows:
       - test_with_mrb_version:
           requires:
             - checkout
+      - test_with_v1:
+          requires:
+            - checkout
 
 executors:
   docker:
@@ -69,6 +72,19 @@ jobs:
       - run: |
           echo "DEBUG VERSION: $(docker run anycable-go-test)"
       - run: docker run anycable-go-test | grep -q "0.6.2"
+
+  test_with_v1:
+    executor: docker
+    steps:
+      - attach_workspace:
+          at: .
+      - run: |
+          rm test/env/HEROKU_ANYCABLE_GO_VERSION
+          echo "1.0.0.preview1" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+      - prepare_docker_image
+      - run: |
+          echo "DEBUG VERSION: $(docker run anycable-go-test)"
+      - run: docker run anycable-go-test | grep -q "1.0.0.preview1"
 
   test_with_mrb_version:
     executor: docker
