@@ -35,8 +35,10 @@ else
   repo="https://github.com/anycable/anycable-go"
 fi
 
-if [ -f "$ENV_DIR/GITHUB_OAUTH_TOKEN"]; then
-  export GITHUB_OAUTH_TOKEN=`cat $ENV_DIR/GITHUB_OAUTH_TOKEN`
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN"]; then
+  token=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN`
+else
+  token=""
 fi
 
 version_dir="v$version"
@@ -64,7 +66,7 @@ if [ -f $ANYCABLE_GO_CACHE ]; then
   echo "-----> Using anycable-go $version from cache"
 else
   echo "-----> Downloading anycable-go $version from $repo"
-  $FETCH_PATH --repo=$repo --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" /tmp
+  env GITHUB_OAUTH_TOKEN="${token}" $FETCH_PATH --repo=$repo --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" /tmp
   cp /tmp/anycable-go${version_suffix}-linux-amd64 $ANYCABLE_GO_CACHE
 fi
 
