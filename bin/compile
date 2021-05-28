@@ -31,6 +31,7 @@ fi
 
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_REPO" ]; then
   repo=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_REPO`
+  echo "-----> Using custom repo: ${repo}"
 else
   repo="https://github.com/anycable/anycable-go"
 fi
