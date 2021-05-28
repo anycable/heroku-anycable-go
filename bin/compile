@@ -29,6 +29,16 @@ else
   version="1.0.5"
 fi
 
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_REPO" ]; then
+  repo=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_REPO`
+else
+  repo="https://github.com/anycable/anycable-go"
+fi
+
+if [ -f "$ENV_DIR/GITHUB_OAUTH_TOKEN"]; then
+  export GITHUB_OAUTH_TOKEN=`cat $ENV_DIR/GITHUB_OAUTH_TOKEN`
+fi
+
 version_dir="v$version"
 
 if [[ $version == *"-mrb"* ]]; then
@@ -47,15 +57,14 @@ else
 fi
 
 ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
-ANYCABLE_REPO="https://github.com/anycable/anycable-go"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
 
 if [ -f $ANYCABLE_GO_CACHE ]; then
   echo "-----> Using anycable-go $version from cache"
 else
-  echo "-----> Downloading anycable-go $version from $ANYCABLE_REPO"
-  $FETCH_PATH --repo=$ANYCABLE_REPO --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" /tmp
+  echo "-----> Downloading anycable-go $version from $repo"
+  $FETCH_PATH --repo=$repo --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" /tmp
   cp /tmp/anycable-go${version_suffix}-linux-amd64 $ANYCABLE_GO_CACHE
 fi
 
