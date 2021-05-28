@@ -36,7 +36,7 @@ else
   repo="https://github.com/anycable/anycable-go"
 fi
 
-if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN"]; then
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN" ]; then
   echo "-----> Found GitHub token"
   token=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN`
 else
