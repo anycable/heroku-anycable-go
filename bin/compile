@@ -10,6 +10,19 @@ ENV_DIR=$3
 BIN_PATH="$BUILD_DIR/bin"
 mkdir -p $CACHE_DIR $BIN_PATH
 
+FETCH_URL="https://github.com/gruntwork-io/fetch/releases/download/v0.4.2/fetch_linux_amd64"
+FETCH_PATH="$CACHE_DIR/fetch"
+
+if [ -f $FETCH_PATH ]; then
+  echo "-----> Using fetch from cache"
+else
+  echo "-----> Downloading fetch"
+  curl -L $FETCH_URL -o $FETCH_PATH
+fi
+
+# Make sure `fetch` is executable
+chmod +x $FETCH_PATH
+
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION" ]; then
   version=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION`
 else
@@ -33,16 +46,17 @@ else
   fi
 fi
 
-ANYCABLE_GO_URL="https://github.com/anycable/anycable-go/releases/download/${version_dir}/anycable-go${version_suffix}-linux-amd64"
 ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
+ANYCABLE_REPO="https://github.com/anycable/anycable-go"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
 
 if [ -f $ANYCABLE_GO_CACHE ]; then
   echo "-----> Using anycable-go $version from cache"
 else
-  echo "-----> Downloading anycable-go $version from $ANYCABLE_GO_URL"
-  curl -L $ANYCABLE_GO_URL -o $ANYCABLE_GO_CACHE
+  echo "-----> Downloading anycable-go $version from $ANYCABLE_REPO"
+  $FETCH_PATH --repo=$ANYCABLE_REPO --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" /tmp
+  cp /tmp/anycable-go${version_suffix}-linux-amd64 $ANYCABLE_GO_CACHE
 fi
 
 echo "-----> Copying binary"
