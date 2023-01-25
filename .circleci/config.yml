@@ -61,7 +61,7 @@ jobs:
       - prepare_docker_image
       - run: |
           echo "DEBUG VERSION: $(docker run anycable-go-test)"
-      - run: docker run anycable-go-test | grep -q "1.1.0"
+      - run: docker run anycable-go-test | grep -q "1.2.3"
 
   test_with_version:
     executor: docker
