@@ -10,7 +10,7 @@ ENV_DIR=$3
 BIN_PATH="$BUILD_DIR/bin"
 mkdir -p $CACHE_DIR $BIN_PATH
 
-FETCH_URL="https://github.com/gruntwork-io/fetch/releases/download/v0.4.2/fetch_linux_amd64"
+FETCH_URL="https://github.com/gruntwork-io/fetch/releases/download/v0.4.5/fetch_linux_amd64"
 FETCH_PATH="$CACHE_DIR/fetch"
 
 if [ -f $FETCH_PATH ]; then
@@ -26,7 +26,7 @@ chmod +x $FETCH_PATH
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION" ]; then
   version=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION`
 else
-  version="1.1.0"
+  version="1.2.3"
 fi
 
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_REPO" ]; then
@@ -41,6 +41,13 @@ if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN" ]; then
   token=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN`
 else
   token=""
+fi
+
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_BINARY_NAME" ]; then
+  binary_name=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_BINARY_NAME`
+  echo "-----> Using custom binary name: ${binary_name}"
+else
+  binary_name="anycable-go"
 fi
 
 version_dir="v$version"
@@ -60,24 +67,24 @@ else
   fi
 fi
 
-ANYCABLE_GO_CACHE="$CACHE_DIR/anycable-go-$version"
+ANYCABLE_GO_CACHE="$CACHE_DIR/$binary_name-$version"
 
 BIN_DIR=$(cd $(dirname $0); pwd)
 
 if [ -f $ANYCABLE_GO_CACHE ]; then
-  echo "-----> Using anycable-go $version from cache"
+  echo "-----> Using $binary_name $version from cache"
 else
-  echo "-----> Downloading anycable-go $version from $repo"
-  $FETCH_PATH --repo=$repo --tag="${version_dir}" --release-asset="anycable-go${version_suffix}-linux-amd64" --github-oauth-token="${token}" /tmp
-  cp /tmp/anycable-go${version_suffix}-linux-amd64 $ANYCABLE_GO_CACHE
+  echo "-----> Downloading $binary_name $version from $repo"
+  $FETCH_PATH --repo=$repo --tag="${version_dir}" --release-asset="${binary_name}${version_suffix}-linux-amd64" --github-oauth-token="${token}" /tmp
+  cp /tmp/${binary_name}${version_suffix}-linux-amd64 $ANYCABLE_GO_CACHE
 fi
 
 echo "-----> Copying binary"
-cp $ANYCABLE_GO_CACHE $BIN_PATH/anycable-go
+cp $ANYCABLE_GO_CACHE $BIN_PATH/$binary_name
 
 echo "-----> Setting permissions"
-chmod +x $BIN_PATH/anycable-go
+chmod +x $BIN_PATH/$binary_name
 
 echo "-----> Verify that binary is working"
 # prior version 0.6 we had only --version flag
-$BIN_PATH/anycable-go -v || $BIN_PATH/anycable-go --version
+$BIN_PATH/$binary_name -v || $BIN_PATH/$binary_name --version
