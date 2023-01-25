@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [
+          "1.0.0.preview1",
+          "0.6.4-mrb",
+          "1.2.2"
+        ]
+        default: [false]
+        include:
+          - version: "1.2.3"
+            default: true
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        rm test/env/HEROKU_ANYCABLE_GO_VERSION
+    - name: Add GitHub token (to avoid rate limiting issues)
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" >> test/env/HEROKU_ANYCABLE_GO_GITHUB_TOKEN
+    - name: Set version
+      if: ${{ !matrix.default }}
+      run: |
+        echo "${{ matrix.version }}" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+    - name: Prepare Docker image
+      run: docker build -t anycable-go-test .
+    - run: |
+        echo "DEBUG VERSION: $(docker run anycable-go-test)"
+        docker run anycable-go-test | grep -q "${{ matrix.version }}"
