@@ -50,6 +50,7 @@ jobs:
         echo "https://github.com/anycable/websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_REPO
         echo "websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_BINARY_NAME
         echo "0.3.0" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+        echo "false" >> test/env/HEROKU_ANYCABLE_GO_VERSION_SUFFIX
     - name: Prepare Docker image
       run: docker build -t anycable-go-test .
     - run: |

@@ -50,14 +50,27 @@ else
   binary_name="anycable-go"
 fi
 
-version_dir="v$version"
-
-if [[ $version == *"-mrb"* ]]; then
-  version_dir=${version_dir/"-mrb"/""}
+if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION_SUFFIX" ]; then
+  version_prefix_val=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION_SUFFIX`
+  if [[ $version_prefix_val == "true" ]]; then
+    echo "-----> Downloading version-suffixed binary"
+    version_suffixed="y"
+  else
+    version_suffixed="n"
+  fi
+else
+  if [[ $version == "0"* ]]; then
+    echo "-----> Downloading version-suffixed binary"
+    version_suffixed="y"
+  else
+    version_suffixed="n"
+  fi
 fi
 
+version_dir="v$version"
+
 # <1.0 binaries contain "v" prefix in their name
-if [[ $version == "0"* ]]; then
+if [[ $version_suffixed == "y" ]]; then
   version_suffix="-v$version"
 else
   if [[ $version == *"-mrb"* ]]; then
@@ -65,6 +78,10 @@ else
   else
     version_suffix=""
   fi
+fi
+
+if [[ $version == *"-mrb"* ]]; then
+  version_dir=${version_dir/"-mrb"/""}
 fi
 
 ANYCABLE_GO_CACHE="$CACHE_DIR/$binary_name-$version"
