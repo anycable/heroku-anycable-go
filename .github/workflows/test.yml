@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
 
 jobs:
@@ -11,47 +11,43 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [
-          "1.0.0.preview1",
-          "0.6.4-mrb",
-          "1.2.2"
-        ]
+        version: ["1.0.0.preview1", "0.6.4-mrb", "1.2.2"]
         default: [false]
         include:
-          - version: "1.5.1"
+          - version: "1.5.4"
             default: true
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-        rm test/env/HEROKU_ANYCABLE_GO_VERSION
-    - name: Add GitHub token (to avoid rate limiting issues)
-      run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" >> test/env/HEROKU_ANYCABLE_GO_GITHUB_TOKEN
-    - name: Set version
-      if: ${{ !matrix.default }}
-      run: |
-        echo "${{ matrix.version }}" >> test/env/HEROKU_ANYCABLE_GO_VERSION
-    - name: Prepare Docker image
-      run: docker build -t anycable-go-test .
-    - run: |
-        echo "DEBUG VERSION: $(docker run anycable-go-test)"
-        docker run anycable-go-test | grep -q "${{ matrix.version }}"
+      - uses: actions/checkout@v4
+      - run: |
+          rm test/env/HEROKU_ANYCABLE_GO_VERSION
+      - name: Add GitHub token (to avoid rate limiting issues)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" >> test/env/HEROKU_ANYCABLE_GO_GITHUB_TOKEN
+      - name: Set version
+        if: ${{ !matrix.default }}
+        run: |
+          echo "${{ matrix.version }}" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+      - name: Prepare Docker image
+        run: docker build -t anycable-go-test .
+      - run: |
+          echo "DEBUG VERSION: $(docker run anycable-go-test)"
+          docker run anycable-go-test | grep -q "${{ matrix.version }}"
   test_custom_repo:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-        rm test/env/HEROKU_ANYCABLE_GO_VERSION
-    - name: Add GitHub token (to avoid rate limiting issues)
-      run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" >> test/env/HEROKU_ANYCABLE_GO_GITHUB_TOKEN
-    - name: Set custom source data
-      run: |
-        echo "https://github.com/anycable/websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_REPO
-        echo "websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_BINARY_NAME
-        echo "0.3.0" >> test/env/HEROKU_ANYCABLE_GO_VERSION
-        echo "false" >> test/env/HEROKU_ANYCABLE_GO_VERSION_SUFFIX
-    - name: Prepare Docker image
-      run: docker build -t anycable-go-test .
-    - run: |
-        docker run anycable-go-test /app/bin/websocket-bench -h | grep -q "0.3.0"
+      - uses: actions/checkout@v4
+      - run: |
+          rm test/env/HEROKU_ANYCABLE_GO_VERSION
+      - name: Add GitHub token (to avoid rate limiting issues)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" >> test/env/HEROKU_ANYCABLE_GO_GITHUB_TOKEN
+      - name: Set custom source data
+        run: |
+          echo "https://github.com/anycable/websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_REPO
+          echo "websocket-bench" >> test/env/HEROKU_ANYCABLE_GO_BINARY_NAME
+          echo "0.3.0" >> test/env/HEROKU_ANYCABLE_GO_VERSION
+          echo "false" >> test/env/HEROKU_ANYCABLE_GO_VERSION_SUFFIX
+      - name: Prepare Docker image
+        run: docker build -t anycable-go-test .
+      - run: |
+          docker run anycable-go-test /app/bin/websocket-bench -h | grep -q "0.3.0"
