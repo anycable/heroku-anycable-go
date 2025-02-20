@@ -30,10 +30,12 @@ else
 fi
 
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_REPO" ]; then
-  repo=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_REPO`
-  echo "-----> Using custom repo: ${repo}"
+    repo=$(cat $ENV_DIR/HEROKU_ANYCABLE_GO_REPO)
+    echo "-----> Using custom repo: ${repo}"
+elif [ "$(printf '%s\n' "1.6" "$version" | sort -V | head -n1)" = "1.6" ]; then
+    repo="https://github.com/anycable/anycable"
 else
-  repo="https://github.com/anycable/anycable-go"
+    repo="https://github.com/anycable/anycable-go"
 fi
 
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_GITHUB_TOKEN" ]; then
