@@ -14,7 +14,7 @@ jobs:
         version: ["1.0.0.preview1", "0.6.4-mrb", "1.2.2", "1.6.0-rc.4"]
         default: [false]
         include:
-          - version: "1.6.1"
+          - version: "1.6.2"
             default: true
     steps:
       - uses: actions/checkout@v4
