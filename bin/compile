@@ -26,12 +26,14 @@ chmod +x $FETCH_PATH
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_VERSION" ]; then
   version=`cat $ENV_DIR/HEROKU_ANYCABLE_GO_VERSION`
 else
-  version="1.6.15"
+  version="1.6.16-redis.1"
 fi
 
 if [ -f "$ENV_DIR/HEROKU_ANYCABLE_GO_REPO" ]; then
     repo=$(cat $ENV_DIR/HEROKU_ANYCABLE_GO_REPO)
     echo "-----> Using custom repo: ${repo}"
+elif [ "$version" = "1.6.16-redis.1" ]; then
+    repo="https://github.com/yknx4/anycable"
 elif [ "$(printf '%s\n' "1.6" "$version" | sort -V | head -n1)" = "1.6" ]; then
     repo="https://github.com/anycable/anycable"
 else
